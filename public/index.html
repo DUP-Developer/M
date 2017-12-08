@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>M</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js" charset="utf-8"></script>
+    <style>
+    body{
+        background-color: #1c1c1c;
+    }
+    input[type=text]{
+        width: 100%;
+        height: 40px;
+        border: none;
+        color: white;
+        background-color: transparent;
+        font-size: 20px;
+    }
+    input[type=text]:focus {
+        outline: none;
+    }
+    li{
+        color:white;
+        font-family: sans-serif;
+        list-style: none;
+    }
+    </style>
+</head>
+<body>
+
+    <div id='app'>
+        <input type="text" name="" v-model='talk' placeholder="!message" value="" @keypress.Enter='sendTalk(talk)'> <br>
+
+        <ul>
+            <li v-for='message in messages'>{{ message }}</li>
+        </ul>
+    </div>
+
+
+
+    <script type="text/javascript">
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            talk: '',
+            messages: []
+        },
+        methods:{
+            "sendTalk":function(talk){
+
+                this.messages.push('I: '+ talk);
+
+                $.get('/m?message='+talk).done((e) => {
+                    console.log(e);
+                    // var json = JSON.parse(e);
+                    this.messages.push("M: "+e.message)
+                })
+
+                this.talk = '';
+            }
+        }
+    })
+
+    var socket = io();
+    // socket.emit('event-veia', 'asdsda asasd ');
+    socket.on('event-message', function(msg){
+        app.$data.messages.push("M: "+msg.message)
+        console.log(msg);
+    });
+    socket.on('event-error', function(msg){
+        app.$data.messages.push("M: "+msg.message)
+        console.log(msg);
+    });
+    </script>
+</body>
+</html>

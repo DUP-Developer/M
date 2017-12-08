@@ -1,0 +1,37 @@
+2017-12-04T23:38:30.028416265 0.149960s notice: Recursively removing directory /home/dragonshit/Documents/M/rethinkdb_data/tmp
+2017-12-04T23:38:30.045920756 0.167462s notice: Initializing directory /home/dragonshit/Documents/M/rethinkdb_data
+2017-12-04T23:38:30.046590875 0.168132s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/home/dragonshit/Documents/M/rethinkdb_data' did not already exist or is empty.)
+2017-12-04T23:38:30.046726127 0.168266s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2017-12-04T23:38:30.066405538 0.187952s notice: Running on Linux 4.10.0-33-generic x86_64
+2017-12-04T23:38:30.067749972 0.189292s notice: Loading data from directory /home/dragonshit/Documents/M/rethinkdb_data
+2017-12-04T23:38:30.150094654 0.271636s info: Automatically using cache size of 100 MB
+2017-12-04T23:38:30.150835295 0.272378s warn: Cache size is very low and may impact performance.
+2017-12-04T23:38:30.153274870 0.274818s notice: Listening for intracluster connections on port 29015
+2017-12-04T23:38:30.159430001 0.280971s notice: Listening for client driver connections on port 28015
+2017-12-04T23:38:30.160338480 0.281880s notice: Listening for administrative HTTP connections on port 8080
+2017-12-04T23:38:30.160356531 0.281896s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-12-04T23:38:30.160367819 0.281908s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-12-04T23:38:30.160387471 0.281927s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-12-04T23:38:30.160396922 0.281937s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-12-04T23:38:30.160413823 0.281954s notice: Server ready, "dragonshit_X45U_0s9" fe3d8b08-54d5-43c2-a7db-94af5013a47b
+2017-12-04T23:39:01.202389168 31.323930s info: Table f05a63b1-895e-4f5a-80ee-fc29466fa465: Starting a new Raft election for term 1.
+2017-12-04T23:39:01.205270681 31.326812s info: Table f05a63b1-895e-4f5a-80ee-fc29466fa465: Added replica on this server.
+2017-12-04T23:39:01.209345079 31.330886s info: Table f05a63b1-895e-4f5a-80ee-fc29466fa465: This server is Raft leader for term 1. Latest log index is 0.
+2017-12-07T23:52:25.892350927 0.233995s notice: Running rethinkdb 2.3.6~0xenial (GCC 5.3.1)...
+2017-12-07T23:52:25.907076676 0.248726s notice: Running on Linux 4.10.0-33-generic x86_64
+2017-12-07T23:52:25.907272481 0.248915s notice: Loading data from directory /home/dragonshit/Documents/M/rethinkdb_data
+2017-12-07T23:52:25.959237460 0.300882s info: Automatically using cache size of 100 MB
+2017-12-07T23:52:25.961329979 0.302974s warn: Cache size is very low and may impact performance.
+2017-12-07T23:52:25.972910168 0.314554s notice: Listening for intracluster connections on port 29015
+2017-12-07T23:52:26.122008403 0.463652s notice: Listening for client driver connections on port 28015
+2017-12-07T23:52:26.122630663 0.464274s notice: Listening for administrative HTTP connections on port 8080
+2017-12-07T23:52:26.122642673 0.464285s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-12-07T23:52:26.122651984 0.464295s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-12-07T23:52:26.122695384 0.464338s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-12-07T23:52:26.122705324 0.464348s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-12-07T23:52:26.122742546 0.464385s notice: Server ready, "dragonshit_X45U_0s9" fe3d8b08-54d5-43c2-a7db-94af5013a47b
+2017-12-07T23:52:27.403322823 1.744967s info: Table f05a63b1-895e-4f5a-80ee-fc29466fa465: Starting a new Raft election for term 2.
+2017-12-07T23:52:27.409611474 1.751255s info: Table f05a63b1-895e-4f5a-80ee-fc29466fa465: This server is Raft leader for term 2. Latest log index is 3.
+2017-12-08T00:42:17.382050748 2991.397158s info: Table 36316e86-63cd-4dee-b069-357b538f6b93: Starting a new Raft election for term 1.
+2017-12-08T00:42:17.384959050 2991.400066s info: Table 36316e86-63cd-4dee-b069-357b538f6b93: Added replica on this server.
+2017-12-08T00:42:17.388123987 2991.403232s info: Table 36316e86-63cd-4dee-b069-357b538f6b93: This server is Raft leader for term 1. Latest log index is 0.
