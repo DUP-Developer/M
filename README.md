@@ -11,10 +11,10 @@ install
 
 the access and eat the we API, just connect this url:
 
-´´´
+```
 http://address/m?message=message_here
 
-´´´
+```
 
 #M
 
