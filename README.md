@@ -1,13 +1,13 @@
 # DATABASE
 install
 
-(RethinkDB)[https://www.rethinkdb.com/docs/install/ubuntu/]
+(https://www.rethinkdb.com/docs/install/ubuntu/)[RethinkDB]
 
 # Back-end
 
 - Nodejs
 
-#Route
+# Route
 
 the access and eat the we API, just connect this url:
 
@@ -16,7 +16,7 @@ http://address/m?message=message_here
 
 ```
 
-#M
+# About M
 
 M é composto por 4 partes principais que são:
 
