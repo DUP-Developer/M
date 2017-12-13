@@ -4,7 +4,8 @@
   "description": "The init lif eof the M",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "keywords": [
     "IA"
@@ -12,6 +13,7 @@
   "author": "Joerverson Santos",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.0",
     "express": "^4.16.2",
     "rethinkdb": "^2.3.3",
     "script-load": "^0.1.0",

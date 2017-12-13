@@ -312,7 +312,7 @@ function M () {
     this.messege = ""
 
     //configuração ee. ações do banco de dados
-    this.db = ""
+    this.db = db
 
     //configuração e ações de socket
     this.socketManager = socket
