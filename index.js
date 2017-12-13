@@ -20,4 +20,4 @@ app.use((req, res, next) => {
 
 
 //ouvindo os serviços
-http.listen(8000, () => console.log('Im listen... man!'));
+http.listen(3000, () => console.log('Im listen... man!'));
