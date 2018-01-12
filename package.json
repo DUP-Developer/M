@@ -14,8 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
+    "bootstrap": "^3.3.7",
+    "crawler": "^1.1.2",
     "express": "^4.16.2",
-    "rethinkdb": "^2.3.3",
+    "lowdb": "^1.0.0",
     "script-load": "^0.1.0",
     "socket.io": "^2.0.4",
     "vue": "^2.5.9"

@@ -5,77 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>M</title>
+
+    <!--    stilos -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <!--    scripts-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.min.js" charset="utf-8"></script>
+    <!-- <script src="./socket.io.js" charset="utf-8"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js" charset="utf-8"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
     <style>
-    body{
-        background-color: #1c1c1c;
-    }
-    input[type=text]{
-        width: 100%;
-        height: 40px;
-        border: none;
-        color: white;
-        background-color: transparent;
-        font-size: 20px;
-    }
-    input[type=text]:focus {
-        outline: none;
-    }
-    li{
-        color:white;
-        font-family: sans-serif;
-        list-style: none;
-    }
+        body {
+            background-color: #1c1c1c;
+        }
+
+        input[type=text] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            color: white;
+            background-color: transparent;
+            font-size: 20px;
+        }
+
+        input[type=text]:focus {
+            outline: none;
+        }
+
+        li {
+            color: black;
+            font-family: sans-serif;
+            list-style: none;
+        }
     </style>
 </head>
+
 <body>
 
-    <div id='app'>
-        <input type="text" name="" v-model='talk' placeholder="!message" value="" @keypress.Enter='sendTalk(talk)'> <br>
+    <div id='app' class="container">
+        <div class="row">
+            <div class="col-12">
+                <input type="text" name="" v-model='talk' placeholder="!message" value="" @keypress.Enter='sendTalk(talk)'> <br>
 
-        <ul>
-            <li v-for='message in messages'>{{ message }}</li>
-        </ul>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for='message in messages'>{{ message }}</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
 
 
     <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                talk: '',
+                messages: [],
+                context: false,
+                socket: io(),
+                myId: false
+            },
+            methods: {
+                "sendTalk": function(talk) {
 
-    var app = new Vue({
-        el: '#app',
-        data: {
-            talk: '',
-            messages: []
-        },
-        methods:{
-            "sendTalk":function(talk){
+                    this.messages.push("I: " + talk);
 
-                this.messages.push('I: '+ talk);
+                    if (!this.context) {
+                        $.get('/m?message=' + talk + "&id="+this.myId).done((e) => {
+                            console.log('-----depois de enviar emnsagem para m--------\n');
+                            console.log(e);
+                            console.log('----------------\n');
+                            // var json = JSON.parse(e);
+                            this.messages.push("<b>M:</b> " + e.message)
 
-                $.get('/m?message='+talk).done((e) => {
-                    console.log(e);
-                    // var json = JSON.parse(e);
-                    this.messages.push("M: "+e.message)
-                })
+                        })
 
-                this.talk = '';
+                    } else {
+                        this.socket.emit('event-question', talk)
+                    }
+
+                    this.talk = '';
+                }
             }
-        }
-    })
+        })
 
-    var socket = io();
-    // socket.emit('event-veia', 'asdsda asasd ');
-    socket.on('event-message', function(msg){
-        app.$data.messages.push("M: "+msg.message)
-        console.log(msg);
-    });
-    socket.on('event-error', function(msg){
-        app.$data.messages.push("M: "+msg.message)
-        console.log(msg);
-    });
+        app.$data.socket.on('event-message', function(msg) {
+            console.log('-----M mandando mensagem do nada--------\n');
+            console.log(msg);
+            console.log('----------------\n');
+            app.$data.messages.push("M: " + msg.message)
+
+            if (msg.context == undefined)
+                app.$data.context = false
+            else
+                app.$data.context = true
+
+
+        });
+
+        app.$data.socket.on('event-config', function(msg) {
+            console.log('-----M mandando mensagem do nada--------\n');
+            console.log(msg);
+            console.log('----------------\n');
+            app.$data.messages.push("M: " + msg.message)
+            
+            // informando qual e o id dele
+            app.$data.myId = msg.id
+            
+
+//            definindo contexto da conversa
+            if (msg.context == undefined)
+                app.$data.context = false
+            else
+                app.$data.context = true
+
+
+        });
+
+        app.$data.socket.on('event-error', function(msg) {
+            console.log('-----m falando de error--------\n');
+            console.dir(msg);
+            console.log('----------------\n');
+
+            app.$data.messages.push("M: " + msg.message)
+        });
+
+        app.$data.socket.on('connection', function(msg) {
+            console.log(msg);
+        });
     </script>
 </body>
 </html>
