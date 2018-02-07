@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>test</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+
+    </head>
+
+    <body>
+        <div id="app">
+            <input type="text" v-model='message'>
+
+            <div>
+                <p>{{message}}</p>
+
+                <ul>
+                    <li v-for='l in list'>{{l}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            let vue_app = new Vue({
+                el:'#app',
+                data:{
+                    message: '',
+                    list:[1,23,4,5,6,7,8]
+                }
+            })
+        </script>
+    </body>
+</html>

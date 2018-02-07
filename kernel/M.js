@@ -1,20 +1,27 @@
-
 const db = require('./db')
-const socket = require('./socket')
 const engime = require('./engime')
 const forward = require('./forward')
 
 
 //criando o objeto de m
 // e instanciando todas os objetos para rodar M
-function M () {
+function M(socket) {
 
     //configuração ee. ações do banco de dados
     this.db = db
 
     //configuração e ações de socket
     this.socketManager = {
-        clients: []
+        emit: (obj) => {
+            socket.emit("event-message", {...obj})
+        },
+        question: (obj, callback) => {
+            socket.emit('event-question', obj)
+
+            socket.on('event-question', (data) => {
+                callback(data)
+            })
+        }
     }
 
     //configuração e ações para chamadas de libs externas
@@ -24,20 +31,29 @@ function M () {
     this.engime = engime
 
     //objeto de manipulação global
-    this.context = {
-        id: null,
-        message: "" , //messagens enviadas para o server
-        context: false,
-        arrayMessage: "",
-        module: false,
-        drive: false
-    }
+    this.context = {}
 
     //ouvindo
-    this.listen = (message, id) => {
-        this.context.message = message
-        this.context.arrayMessage = message.split(" ")
-        this.context.id = id
+    this.listen = (message) => {
+
+        this.context = {...{
+            //    limpar modulo  
+            clear: () => {
+                this.context.module = false
+            },
+            //    inserir mensagem
+            write: (message) => {
+                this.context.message = message
+            },
+
+            message: message, //messagens enviadas para o server
+            context: false,
+            arrayMessage: message.split(" "),
+            module: false,
+            drive: false
+        }}
+
+
 
 
         //vendo o que foi falado
@@ -52,13 +68,9 @@ function M () {
 
     }
 
-
 }
 
 
 module.exports = (io) => {
-    // instanciando M
-    // dando a referencia de socketIO para I/O
-
-    return new M()
+    return new M(io)
 }

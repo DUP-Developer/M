@@ -1,137 +1,181 @@
-
 /**
 ------------------------------------------------
 Meu money
 ------------------------------------------------
 **/
+const _ = require('lodash')
+
 const financas = {
     termsPositives: ["sim", "tem", "quero"],
     termsNegatives: ["não", "vlw", "de boas"],
-    context: {},
+    m: {},
     what: () => {
-        financas.context.socketManager.question({message: "O que foi que vc comprou? \n"}, (answer) => {
-            financas.money.creditCard.nameDespesas.push(answer)
+
+        financas.m.context.write("O que foi que vc comprou? \n")
+
+        financas.m.socketManager.question(financas.m.context, (answer) => {
+            console.log(financas.engime.item_price())
             financas.howMuch()
         })
 
     },
     howMuch: () => {
-        financas.context.socketManager.question({message: "É quanto foi isso?? \n"}, (answer) => {
-            financas.money.creditCard.despesas.push(parseFloat(answer.replace(',', '.')))
+
+        financas.m.context.write("É quanto foi isso?? \n")
+
+        financas.m.socketManager.question(financas.m.context, (answer) => {
+            financas.money.despesas.push(parseFloat(answer.message.replace(',', '.')))
             financas.again()
         })
 
+
     },
     again: () => {
-        financas.context.socketManager.question({message: "tem mais coisas? \n"}, (signal) => {
-            if(financas.termsPositives.indexOf(signal) != -1)
+        financas.m.context.write("tem mais coisas? \n")
+
+        financas.m.socketManager.question(financas.m.context, (signal) => {
+            if (financas.termsPositives.indexOf(signal.message) != -1)
                 financas.what()
-            else if(financas.termsNegatives.indexOf(signal) != -1)
-            {
+            else if (financas.termsNegatives.indexOf(signal.message) != -1) {
                 financas.extrato()
                 financas.close()
 
-            }
-            else
-            {
-                financas.context.socketManager.write("Não entendi.")
+            } else {
+                financas.m.socketManager.emit("Não entendi.")
                 financas.again()
             }
 
         })
     },
     extrato: () => {
-        let sum=0;
+        let sum = 0,
+            message = '';
 
-        financas.context.socketManager.write({message: `Data: ${financas.money.creditCard.date} \n`})
+        financas.m.context.write(`Data: ${financas.money.date} \n`)
+
+        //        financas.m.socketManager.emit(financas.m.context)
 
 
         //Despesas avulsas
-        financas.context.socketManager.write({message: "\n - Despesas Avulsas - \n\n"})
+        //        financas.m.context.write("\n - Despesas Avulsas - \n\n")
+        //        financas.m.socketManager.emit(financas.m.context)
 
-        for(let it in financas.money.creditCard.despesas)
-        {
+        for (let it in financas.money.despesas) {
             // aqui fica a parte de retorno para o cliente
-            financas.context.socketManager.write({message:"Item: " + financas.money.creditCard.nameDespesas[it] + " - R$ |" + financas.money.creditCard.despesas[it] + "| \n"})
-            sum += financas.money.creditCard.despesas[it]
+
+            message += "Item: " + financas.money.nameDespesas[it] + " - R$ |" + financas.money.despesas[it] + "| \n"
+
+            sum += financas.money.despesas[it]
         }
+
+
+        financas.m.context.write(message)
+        financas.m.socketManager.emit(financas.m.context)
 
         //despesas fixas
 
-        financas.context.socketManager.write({message:"\n - Despesas Fixas - \n\n"})
+        message = "\n - Despesas Fixas - \n\n"
 
-        for(let it in financas.money.creditCard.despesasFixas)
-        {
+
+        for (let it in financas.money.despesasFixas) {
             // aqui fica a parte de retorno para o cliente
-            financas.context.socketManager.write({message:"Item: " + financas.money.creditCard.nameDespesasFixas[it] + " - R$ |" + financas.money.creditCard.despesasFixas[it] + "| \n"})
-            sum += financas.money.creditCard.despesasFixas[it]
+
+            message += "Item: " + financas.money.nameDespesasFixas[it] + " - R$ |" + financas.money.despesasFixas[it] + "| \n"
+
+            sum += financas.money.despesasFixas[it]
         }
 
+        financas.m.context.write(message)
+        financas.m.socketManager.emit(financas.m.context)
 
         //resumo de total de gastos
-        financas.context.socketManager.write({message:"\n\n - Total de gastos: R$ " + sum + " - \n\n"})
+        financas.m.context.write("\n\n - Total de gastos: R$ " + sum + " - \n\n")
+        financas.m.socketManager.emit(financas.m.context)
 
     },
     buy: () => {
-        financas.context.socketManager.question({message: 'Quanto é a parada? \n'}, (answer) => {
+        financas.m.socketManager.question({
+            message: 'Quanto é a parada? \n'
+        }, (answer) => {
             var valorNovaAquisicao = parseFloat(answer.replace(',', '.'))
 
-            if( financas.money.creditCard.receita > financas.money.DespesasTotais() )
-                if( (financas.money.creditCard.receita - financas.money.DespesasTotais()) > valorNovaAquisicao )
-                    financas.context.socketManager.write({message:"Da para comprar sim, e ainda sobra R$ " + ((financas.money.creditCard.receita - financas.money.DespesasTotais()) - valorNovaAquisicao).toFixed(2) + "\n"})
-                else
-                    financas.context.socketManager.write({message:"Da não vicc, é caro só temos R$ " + ((financas.money.creditCard.receita - financas.money.DespesasTotais())).toFixed(2) + "\n"})
+            if (financas.money.receita > financas.money.DespesasTotais())
+                if ((financas.money.receita - financas.money.DespesasTotais()) > valorNovaAquisicao)
+                    financas.m.socketManager.emit({
+                        message: "Da para comprar sim, e ainda sobra R$ " + ((financas.money.receita - financas.money.DespesasTotais()) - valorNovaAquisicao).toFixed(2) + "\n"
+                    })
             else
-                financas.context.socketManager.write({message: "Homi, tu tá e devendo demais vlh. da não.\n"})
+                financas.m.socketManager.emit({
+                    message: "Da não vicc, é caro só temos R$ " + ((financas.money.receita - financas.money.DespesasTotais())).toFixed(2) + "\n"
+                })
+            else
+                financas.m.socketManager.emit({
+                    message: "Homi, tu tá e devendo demais vlh. da não.\n"
+                })
         })
     },
     disponivel: () => {
+
         let sum = financas.money.DespesasTotais();
 
-        if(sum > financas.money.creditCard.receita)
-            financas.context.socketManager.write({message:"bom, você ta é lascado sabe, ta devendo ->> R$ " + (sum - financas.money.creditCard.receita) + "\n"})
+        if (sum > financas.money.receita)
+            financas.m.socketManager.emit({
+                message: "bom, você ta é lascado sabe, ta devendo ->> R$ " + (sum - financas.money.receita).toFixed(2) + "\n"
+            })
         else
-            financas.context.socketManager.write({message:"bom, você tem R$ " + (financas.money.creditCard.receita - sum).toFixed(2) + " de dinheiro livre. \n"})
+            financas.m.socketManager.emit({
+                message: "bom, você tem R$ " + (financas.money.receita - sum).toFixed(2) + " de dinheiro livre. \n"
+            })
 
         //retrono para outras funções
-        return financas.money.creditCard.receita > sum ? financas.money.creditCard.receita - sum : 0
+        return financas.money.receita > sum ? financas.money.receita - sum : 0
     },
-    money:{
-        message:'Bom...',
-        creditCard:{ // esse objheto será pego do banco de adados onde será objetos são enseridos por datas
-            date: new Date(),
-            receita: 710,
-            despesas: [20,22,14,56,635],
-            nameDespesas: ["um açai", "comida boa", "sei lá", "bom demais", "cuzcuz"],
-            despesasFixas: [23.56, 29.88],
-            nameDespesasFixas: ["nextflix", "x360"]
-        },
+    money: {
+        message: 'Bom...',
+        receita: 763,
+        date: new Date(),
+        despesas: {},
+        type: 'creditCard',
+
         DespesasTotais: () => {
             var sum = 0;
             //despesas avulsas
-            for(let it in financas.money.creditCard.despesas)
-                sum += parseFloat(financas.money.creditCard.despesas[it]);
+            //            console.log(financas.money.despesas)
+
+
+            for (let it in financas.money.despesas)
+                sum += parseFloat(financas.money.despesas[it]);
             //despesas fixas
-            for(let it in financas.money.creditCard.despesasFixas)
-                sum += parseFloat(financas.money.creditCard.despesasFixas[it]);
+            for (let it in financas.money.despesasFixas)
+                sum += parseFloat(financas.money.despesasFixas[it]);
 
             return sum
 
         }
     },
     close: () => {
-        financas.context = false
-        financas.context.socketManager.write("Certo.")
+        financas.m.socketManager.emit("Certo.")
+        financas.m = false
+    },
+    engime: {
+        item_price: () => {
+            let s = financas.m.context.message.split('de')
+
+            return {
+                item: s[0],
+                price: s[1].match(/[0-9].?[0-9]*.?[0-9]*/) == null ? 0 : s[1].match(/[0-9].?[0-9]*.?[0-9]*/)[0]
+            }
+
+        }
     },
     run: (m) => {
-        financas.context = m
-        // console.log(m.context.module);
+        financas.m = m
+        // console.log(m.m.module);
         //executando o metodo que o translator diz que é o certo
         financas[m.context.module.method]()
     },
-    myTerms:[
-        {
-            terms : [
+    myTerms: [{
+            terms: [
                 "dinheiro", 'posso', 'gastar', 'tenho', 'quanto'
             ],
             method: 'disponivel',
@@ -139,7 +183,7 @@ const financas = {
             found: 0
         },
         {
-            terms : [
+            terms: [
                 "comprei", 'parada', 'uma', 'negocio'
             ],
             method: 'what',
@@ -148,5 +192,7 @@ const financas = {
         }
     ]
 }
+
+
 
 module.exports = financas;

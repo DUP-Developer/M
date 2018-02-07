@@ -5,6 +5,7 @@ const db = low(new FileSync('kernel/database/m2_db.json'))
 
 db.defaults({
     terms: [],
+    financas:[],
     configsIncrements: { terms:0 }
 }).write()
 /**

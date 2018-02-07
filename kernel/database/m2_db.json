@@ -22,7 +22,9 @@
         "posso",
         "gastar",
         "tenho",
-        "quanto"
+        "quanto",
+        "ta",
+        "meu"
       ],
       "method": "disponivel",
       "name": "financas",
@@ -87,5 +89,6 @@
   ],
   "configsIncrements": {
     "terms": 6
-  }
+  },
+  "financas": []
 }

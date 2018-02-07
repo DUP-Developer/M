@@ -4,6 +4,7 @@
   "description": "The init lif eof the M",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --dump",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
@@ -17,6 +18,7 @@
     "bootstrap": "^3.3.7",
     "crawler": "^1.1.2",
     "express": "^4.16.2",
+    "lodash": "^4.17.5",
     "lowdb": "^1.0.0",
     "script-load": "^0.1.0",
     "socket.io": "^2.0.4",

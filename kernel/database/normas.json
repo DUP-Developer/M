@@ -1,0 +1,45 @@
+{
+    artigos: [
+        {
+            name: 'a',
+            genre: 'female',
+            number: 'single'
+        },
+        {
+            name: 'as',
+            genre: 'female',
+            number: 'plural'
+        },
+        {
+            name: 'o',
+            genre: 'male',
+            number: 'single'
+        },
+        {
+            name: 'os',
+            genre: 'male',
+            number: 'single'
+        },
+        {
+            name: 'um',
+            genre: 'male',
+            number: 'single'
+        },
+        {
+            name: 'uma',
+            genre: 'female',
+            number: 'single'
+        },
+        {
+            name: 'uns',
+            genre: 'male',
+            number: 'plural'
+        },
+        {
+            name: 'umas',
+            genre: 'female',
+            number: 'plural'
+        },
+        
+    ]
+}

@@ -8,7 +8,11 @@ const forward = {
 
         //caso não venha nada ele já responde ao carinha
         if(m.context.module.name == "" || !m.context.module) {
-            m.socketManager.clients[m.context.id].emit("event-error", {message:'Não entendi.'});
+            
+            m.context.write('Não entendi.')
+            
+            m.socketManager.emit(m.context);
+            
             return;
         }
 

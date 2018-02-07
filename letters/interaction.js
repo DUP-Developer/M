@@ -1,25 +1,34 @@
-let interaction = {
-    context : {},
-    give_hello: () => {
-        interaction.context.socketManager.clients[interaction.context.id].emit('event-message', {message:'oier'})
-    },
-    run: (m) => {
-        interaction.context = m
+'use strict'
 
-//        console.log(interaction.context.socketManager);
+let interaction = {
+    m: {},
+    run: (m) => {
+        interaction.m = m
+
+        //        console.log(interaction.context.socketManager);
         //executando o metodo que o translator diz que é o certo
         interaction[m.context.module.method]()
+
+        m.context.clear()
     },
-    myTerms:[
+    myTerms: [
         {
-            terms : [
-                "oier", 'oi', 'hello', 'olá', 'como', "vai"
+            terms: [
+                "oier", 'oi', 'hello', 'olá', "vai"
             ],
             method: 'give_hello',
             name: '',
             found: 0
         }
-    ]
+    ],
+    give_hello: () => {
+
+        interaction.m.context.write(interaction.myTerms[0].terms[Math.floor(Math.random() * interaction.myTerms[0].terms.length)])
+
+        interaction.m.context.clear()
+
+        interaction.m.socketManager.emit(interaction.m.context)
+    }
 }
 
 module.exports = interaction;
