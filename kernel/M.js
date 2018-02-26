@@ -1,42 +1,14 @@
-const db = require('./db')
 const engime = require('./engime')
 const forward = require('./forward')
 
 
 //criando o objeto de m
 // e instanciando todas os objetos para rodar M
-function M(socket) {
-
-    //configuração ee. ações do banco de dados
-    this.db = db
-
-    //configuração e ações de socket
-    this.socketManager = {
-        emit: (obj) => {
-            socket.emit("event-message", {...obj})
-        },
-        question: (obj, callback) => {
-            socket.emit('event-question', obj)
-
-            socket.on('event-question', (data) => {
-                callback(data)
-            })
-        }
-    }
-
-    //configuração e ações para chamadas de libs externas
-    this.forward = forward
-
-    //configuração e ações para treduzir o que cliente esta falando
-    this.engime = engime
-
-    //objeto de manipulação global
+function M() {
+    this.res = {}
     this.context = {}
 
-    //ouvindo
-    this.listen = (message) => {
-
-        this.context = {...{
+    this.model = { ...{
             //    limpar modulo  
             clear: () => {
                 this.context.module = false
@@ -46,31 +18,41 @@ function M(socket) {
                 this.context.message = message
             },
 
-            message: message, //messagens enviadas para o server
-            context: false,
-            arrayMessage: message.split(" "),
+            message: "", //messagens enviadas para o server
+            goBack: false,
             module: false,
             drive: false
-        }}
 
+        }
+    }
 
+    this.listen = (ctx, res) => {
+        this.res = res
 
+        //verificando se vem o alguma contextto do cliente
+        ctx.arrayMessage = ctx.message.split(" ")
 
-        //vendo o que foi falado
-        this.engime.moduleTranslator(this);
+        //instanciando no global o contexto
+        this.context = ctx
+        
+        //have goback? - se é uma requisição de resposta que M esta esperando
+        if (ctx.goBack) {
+            forward.reply(this)
+        } else {
 
-        console.log('INIT------------------------------------\n');
-        console.log(this.context);
-        console.log('\nFIN------------------------------------\n');
+            //Fazendo a tradução de palavras do cliente para modulo e methodo a ser chamado
+            this.context = engime.moduleTranslator(this);
 
-        //vendo quem vai ser chamado
-        this.forward.run(this);
+            //encaminhando para o modulo responsavel
+            forward.run(this);
+        }
+        
 
     }
 
 }
 
 
-module.exports = (io) => {
-    return new M(io)
+module.exports = () => {
+    return new M()
 }

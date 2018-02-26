@@ -8,89 +8,153 @@ const _ = require('lodash')
 const financas = {
     termsPositives: ["sim", "tem", "quero"],
     termsNegatives: ["não", "vlw", "de boas"],
+    itemWait: {}, // item que fica aguardando um valor chegar informado pelo cliente
     m: {},
     what: () => {
 
-        financas.m.context.write("O que foi que vc comprou? \n")
+        financas.m.context.message = "O que foi que vc comprou?"
 
-        financas.m.socketManager.question(financas.m.context, (answer) => {
-            console.log(financas.engime.item_price())
-            financas.howMuch()
+        financas.m.context.goBack = {
+            module: "financas",
+            method: "howMuch"
+        }
+
+        financas.m.res.json({
+            context: financas.m.context
         })
+
 
     },
     howMuch: () => {
+        let newItem = financas.engime.item_price()
 
-        financas.m.context.write("É quanto foi isso?? \n")
-
-        financas.m.socketManager.question(financas.m.context, (answer) => {
-            financas.money.despesas.push(parseFloat(answer.message.replace(',', '.')))
+        if (newItem) {
+            financas.money.despesas.push(newItem)
             financas.again()
-        })
+        } else {
+            //adicionando o item para ser oppulado na proxima execução
+            financas.itemWait = {
+                item: financas.m.context.message,
+                price: 0.0
+            }
 
+
+            //fazendo uma nova pegunta ao carinha
+            financas.m.context.message = "É quanto foi isso?? "
+
+            //preparando o contexto para resposta com M
+            financas.m.context.goBack = {
+                module: "financas",
+                method: "again"
+            }
+
+            //enviando a mensagem para o cliente
+            financas.m.res.json({
+                context: financas.m.context
+            })
+        }
 
     },
     again: () => {
-        financas.m.context.write("tem mais coisas? \n")
 
-        financas.m.socketManager.question(financas.m.context, (signal) => {
-            if (financas.termsPositives.indexOf(signal.message) != -1)
-                financas.what()
-            else if (financas.termsNegatives.indexOf(signal.message) != -1) {
-                financas.extrato()
-                financas.close()
+        //caso o itemWait esteja esperando o preço a ser adicionado ele verifica isso
+        if(!_.isEmpty(financas.itemWait)){
+            //pegando do contexto o valor do intem informado pelo usuario
+            financas.itemWait.price = parseFloat(financas.m.context.message)
 
-            } else {
-                financas.m.socketManager.emit("Não entendi.")
-                financas.again()
+            //adicionando a nova despesa
+            financas.money.despesas.push(financas.itemWait)
+
+            //limpando o item para futuros usos
+            financas.itemWait = {}
+        }
+
+        /**
+         * ---------------------------------------------------
+         * TESTANDO SE O USER QUER ADICIONAR MAIS COISAS
+         * ---------------------------------------------------
+         * **/
+        //caso tenha um novo item para adicionar
+        if (financas.termsPositives.indexOf(financas.m.context.message) != -1)
+            financas.what()
+        //caso não tenha mais nada, ele finaliza e da um extrato
+        else if (financas.termsNegatives.indexOf(financas.m.context.message) != -1) {
+            financas.extrato()
+            financas.close()
+
+            // caso o carinha não tenha dito sim ou nõa ai ele pergunta de novo
+        }
+        
+        /**
+         * ---------------------------------------------------
+         * PERGUNTANDO SE O USER QUER ADICIONAR MAIS COISAS
+         * ---------------------------------------------------
+         * **/
+
+        //caso ainda exista instancia de M aqui ele vai continuar perguntando, caso tenha sido undefinid ela não pergunta mais
+        if (!_.isUndefined(financas.m)) {
+
+            financas.m.context.message = "tem mais coisas?"
+
+            financas.m.context.goBack = {
+                module: "financas",
+                method: "again"
             }
 
-        })
+            financas.m.res.json({
+                context: financas.m.context
+            })
+        }
+
+
     },
     extrato: () => {
         let sum = 0,
             message = '';
 
-        financas.m.context.write(`Data: ${financas.money.date} \n`)
+        message = `Data: ${financas.money.date} \n`
 
-        //        financas.m.socketManager.emit(financas.m.context)
+        //        financas.m.res.json(financas.m.context)
 
 
-        //Despesas avulsas
+        /**
+         * -----------------------------------------------------
+         *                 DESPESAS AVULSAS
+         * -----------------------------------------------------
+         * **/
+
         //        financas.m.context.write("\n - Despesas Avulsas - \n\n")
-        //        financas.m.socketManager.emit(financas.m.context)
+        //        financas.m.res.json(financas.m.context)
 
-        for (let it in financas.money.despesas) {
-            // aqui fica a parte de retorno para o cliente
+        //iterando para poder pegar toda as despesas
+        _.forEach(financas.money.despesas, (o) => {
 
-            message += "Item: " + financas.money.nameDespesas[it] + " - R$ |" + financas.money.despesas[it] + "| \n"
+            message += "Item: " + o.item + " - R$ |" + o.price + "| \n"
 
-            sum += financas.money.despesas[it]
-        }
+            sum += o.price
+        })
 
+        /**
+         * -----------------------------------------------------
+         *                 DESPESAS FIXAS
+         * -----------------------------------------------------
+         * **/
 
-        financas.m.context.write(message)
-        financas.m.socketManager.emit(financas.m.context)
+        message += "\n - Despesas Fixas - \n\n"
 
-        //despesas fixas
+        _.forEach(financas.money.despesasFixas, (o) => {
+            message += "Item: " + o.item + " - R$ |" + o.price + "| \n"
 
-        message = "\n - Despesas Fixas - \n\n"
-
-
-        for (let it in financas.money.despesasFixas) {
-            // aqui fica a parte de retorno para o cliente
-
-            message += "Item: " + financas.money.nameDespesasFixas[it] + " - R$ |" + financas.money.despesasFixas[it] + "| \n"
-
-            sum += financas.money.despesasFixas[it]
-        }
-
-        financas.m.context.write(message)
-        financas.m.socketManager.emit(financas.m.context)
+            sum += o.price
+        })
 
         //resumo de total de gastos
-        financas.m.context.write("\n\n - Total de gastos: R$ " + sum + " - \n\n")
-        financas.m.socketManager.emit(financas.m.context)
+        message += "\n\n - Total de gastos: R$ " + sum + " - \n\n"
+
+        //enviando para o cliente as informações
+        financas.m.context.message = message
+
+        financas.m.res.json({context: financas.m.context})
 
     },
     buy: () => {
@@ -99,78 +163,99 @@ const financas = {
         }, (answer) => {
             var valorNovaAquisicao = parseFloat(answer.replace(',', '.'))
 
-            if (financas.money.receita > financas.money.DespesasTotais())
-                if ((financas.money.receita - financas.money.DespesasTotais()) > valorNovaAquisicao)
-                    financas.m.socketManager.emit({
-                        message: "Da para comprar sim, e ainda sobra R$ " + ((financas.money.receita - financas.money.DespesasTotais()) - valorNovaAquisicao).toFixed(2) + "\n"
+            if (financas.money.receita > financas.DespesasTotais()) {
+                if ((financas.money.receita - financas.DespesasTotais()) > valorNovaAquisicao) {
+                    financas.m.context.message = "Da para comprar sim, e ainda sobra R$ " + ((financas.money.receita - financas.DespesasTotais()) - valorNovaAquisicao).toFixed(2) + "\n"
+
+                    financas.m.res.json({
+                        context: financas.m.context
                     })
-            else
-                financas.m.socketManager.emit({
-                    message: "Da não vicc, é caro só temos R$ " + ((financas.money.receita - financas.money.DespesasTotais())).toFixed(2) + "\n"
+                } else {
+                    financas.m.context.message = "Da não vicc, é caro só temos R$ " + ((financas.money.receita - financas.DespesasTotais())).toFixed(2) + "\n"
+                    financas.m.res.json({
+                        context: financas.m.context
+                    })
+                }
+            } else {
+                financas.m.context.message = "Homi, tu tá e devendo demais vlh. da não.\n"
+                financas.m.res.json({
+                    context: financas.m.context
                 })
-            else
-                financas.m.socketManager.emit({
-                    message: "Homi, tu tá e devendo demais vlh. da não.\n"
-                })
+            }
+
         })
     },
     disponivel: () => {
 
-        let sum = financas.money.DespesasTotais();
+        let sum = financas.DespesasTotais();
 
-        if (sum > financas.money.receita)
-            financas.m.socketManager.emit({
-                message: "bom, você ta é lascado sabe, ta devendo ->> R$ " + (sum - financas.money.receita).toFixed(2) + "\n"
+        if (sum > financas.money.receita) {
+            financas.m.context.message = "bom, você ta é lascado sabe, ta devendo ->> R$ " + (sum - financas.money.receita).toFixed(2) + "\n"
+            financas.m.res.json({
+                context: financas.m.context
             })
-        else
-            financas.m.socketManager.emit({
-                message: "bom, você tem R$ " + (financas.money.receita - sum).toFixed(2) + " de dinheiro livre. \n"
+        } else {
+            financas.m.context.message = "bom, você tem R$ " + (financas.money.receita - sum).toFixed(2) + " de dinheiro livre. \n"
+            //enviando a parada
+            financas.m.res.json({
+                context: financas.m.context
             })
+        }
 
         //retrono para outras funções
         return financas.money.receita > sum ? financas.money.receita - sum : 0
     },
-    money: {
-        message: 'Bom...',
+    DespesasTotais: () => {
+        var sum = 0;
+        //despesas avulsas
+        //            console.log(financas.money.despesas)
+
+
+        for (let it in financas.money.despesas)
+            sum += parseFloat(financas.money.despesas[it]);
+        //despesas fixas
+        for (let it in financas.money.despesasFixas)
+            sum += parseFloat(financas.money.despesasFixas[it]);
+
+        return sum
+
+    },
+    money: {        
         receita: 763,
         date: new Date(),
-        despesas: {},
-        type: 'creditCard',
-
-        DespesasTotais: () => {
-            var sum = 0;
-            //despesas avulsas
-            //            console.log(financas.money.despesas)
-
-
-            for (let it in financas.money.despesas)
-                sum += parseFloat(financas.money.despesas[it]);
-            //despesas fixas
-            for (let it in financas.money.despesasFixas)
-                sum += parseFloat(financas.money.despesasFixas[it]);
-
-            return sum
-
-        }
+        despesas: [],
+        despesasFixas: [],
+        type: 'creditCard'        
     },
     close: () => {
-        financas.m.socketManager.emit("Certo.")
-        financas.m = false
+        financas.m.context.message = 'Thanks man'
+        financas.m.res.json({
+            context: financas.m.context
+        })
+        financas.m = undefined
     },
     engime: {
         item_price: () => {
             let s = financas.m.context.message.split('de')
-
-            return {
-                item: s[0],
-                price: s[1].match(/[0-9].?[0-9]*.?[0-9]*/) == null ? 0 : s[1].match(/[0-9].?[0-9]*.?[0-9]*/)[0]
-            }
+            if (s.length > 1)
+                return {
+                    item: s[0],
+                    price: s[1].match(/[0-9].?[0-9]*.?[0-9]*/) == null ? 0 : s[1].match(/[0-9].?[0-9]*.?[0-9]*/)[0]
+                }
+            else
+                return false
 
         }
     },
+    helpers: {
+        disponivel: "Podemos saber quanto de dinheiro você tem de modo geral",
+        what: "para adicionar uma nova despesa a sua lista, e com isso gerenciar tudo de forma minusiosa",
+        buy: "caso você queira comprar alguma coisa, eu posso ver se isso vai da certo ou não."
+    },
     run: (m) => {
+        //instanciando M
         financas.m = m
-        // console.log(m.m.module);
+        
         //executando o metodo que o translator diz que é o certo
         financas[m.context.module.method]()
     },

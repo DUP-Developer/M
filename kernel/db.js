@@ -1,13 +1,14 @@
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 
-const db = low(new FileSync('kernel/database/m2_db.json'))
+const db = low(new FileSync('kernel/database/m2.db.json'))
 
 db.defaults({
     terms: [],
     financas:[],
     configsIncrements: { terms:0 }
 }).write()
+
 /**
 -------------------------------------------------
 - DB -
@@ -41,8 +42,13 @@ const db_mod = {
     insert: (table, json) => {
         if(db.has(table).value() == null)
         {
-            console.log("Tabela não existe");
-            return ;
+            console.log("Tabela não existe\n");
+            console.log("... criando\n");
+
+            db_mod.createTable(table)
+
+            console.log("\n criado!! ");
+            //return ;
         }
 
         // adicionando o novo id automatico
@@ -67,10 +73,11 @@ const db_mod = {
     },
     //busca especifica por alguma coisa  {key: val}
     search: (table, json) => {
-        return db.get(table).find(json).value()
+        return db.get(table).value(db.get(table).find(json).value())
     },
     all: (table) => {
-        return db.get(table).value()
+        
+        return {...db.get(table).value()}
     }
 
 }

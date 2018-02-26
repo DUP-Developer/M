@@ -4,12 +4,7 @@ let interaction = {
     m: {},
     run: (m) => {
         interaction.m = m
-
-        //        console.log(interaction.context.socketManager);
-        //executando o metodo que o translator diz que é o certo
         interaction[m.context.module.method]()
-
-        m.context.clear()
     },
     myTerms: [
         {
@@ -23,11 +18,9 @@ let interaction = {
     ],
     give_hello: () => {
 
-        interaction.m.context.write(interaction.myTerms[0].terms[Math.floor(Math.random() * interaction.myTerms[0].terms.length)])
+        interaction.m.context.message = interaction.myTerms[0].terms[Math.floor(Math.random() * interaction.myTerms[0].terms.length)]
 
-        interaction.m.context.clear()
-
-        interaction.m.socketManager.emit(interaction.m.context)
+        interaction.m.res.json({context: interaction.m.context})
     }
 }
 

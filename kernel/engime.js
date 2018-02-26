@@ -1,4 +1,5 @@
 const db = require('./db')
+const _ = require('lodash')
 /**
 -------------------------------------------------
 - ENGIMEM -
@@ -6,21 +7,9 @@ const db = require('./db')
 **/
 
 const engime = {
-
     phase: "",
     result: {},
-
-    cut: () => engime.phase.split(' '), //quebrando a frase para analizar o que vem.
-    getContext: (obj, who, val) => {
-
-        var index = who.indexOf(val);
-        who.splice(index, 1);
-
-        obj.arrayMessage = who;
-
-        return obj;
-
-    },
+    m: {},
     /**
     esse é um tradutar de modulo, é que traduz que metodo do module ele vai rodar, deacordo com as informaões
     passadas pelo cliente "phase" <- texto que o cliente escreve.
@@ -50,42 +39,29 @@ const engime = {
     // phase: any text that user talking with M
     moduleTranslator: (m) => {
 
-        //        caso ele seja uma resposta de alguma coisa ele pegfa o que veio
-        //        nomoduleReturn e manda para module para ser executado
-       
-        //para linpar a campo
-        m.context.module = engime.statistics
+        //todos os registros de funções que vem do db
+        var registerFuncs = Object.values(db.all('terms'))
 
-        //indentificando cada palavra da frase com as coisas no registro do modulo(letters) e alencando algumas propriedades
-        for (let w = 0; w < m.context.arrayMessage.length; w++) {
-            for (var it in engime.registerFuncs) {
-                for (var wg of engime.registerFuncs[it].terms) {
-                    if (wg == m.context.arrayMessage[w]) {
-                        engime.registerFuncs[it].found++
-                    }
-                }
-            }
+        var mc = []
+
+        _.forEach(registerFuncs, (o) => {
+            let im = _.intersectionWith(m.context.arrayMessage, o.terms, _.isEqual)
+
+            if(!_.isEmpty(im))
+                mc.push({name: o.name, method: o.method, count: im.length})
+            
+        })
+
+        if (_.isEmpty(mc))
+            m.context.module = engime.statistics
+        else {
+            let module = _.maxBy(mc, o => o.count)
+            m.context.module = module
         }
 
-        //pegando as porcentages de encontrados para tirar a margem de erro
-        let totalFound = 0;
-        //somando todas as palavras encontradas para todos os modulos e com isso ter a base para tirar a porcentagemde error
-        for (let stt in engime.registerFuncs) {
-            totalFound += engime.registerFuncs[stt].found
-        }
-        //aqui estamos validando as informações para retornar qual é o metodo mais possivel de ser executado
-        for (let stt in engime.registerFuncs) {
-            if (engime.registerFuncs[stt].found > engime.statistics.foundCount) {
-                engime.statistics.foundCount = engime.registerFuncs[stt].found
-                engime.statistics.method = engime.registerFuncs[stt].method
-                engime.statistics.name = engime.registerFuncs[stt].name
-                engime.statistics.porcentError = (engime.registerFuncs[stt].found / totalFound) - 1
-            }
-        }
+        return m.context
 
-        m.context.module = engime.statistics
-    },
-    registerFuncs: db.all('terms'),
+    }
 }
 
 
