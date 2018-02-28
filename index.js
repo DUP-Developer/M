@@ -40,13 +40,13 @@ app.route('/api/m')
         // think of it as route specific middleware!
         next();
     })
-    .get(function (req, res, next) {
+    .get(function (req, res, next) {        
         res.json({
             context: m.model
         })        
     })
     .post((req, res, next) => {                
-        m.listen(JSON.parse(req.body.context), res)        
+        m.listen(req.body.context, res)        
     })
 
 
