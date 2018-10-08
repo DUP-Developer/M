@@ -4,7 +4,7 @@
   "description": "The init lif eof the M",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --dump",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
@@ -15,13 +15,14 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
-    "crawler": "^1.1.2",
     "express": "^4.16.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
     "script-load": "^0.1.0",
-    "socket.io": "^2.0.4",
+    "token": "^0.1.0",
     "vue": "^2.5.9"
   }
 }

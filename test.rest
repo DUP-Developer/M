@@ -1,0 +1,15 @@
+POST http://localhost:3001/api/m HTTP/1.1
+content-type: application/json
+
+{
+    "say": "como esta meu dinheiro"    
+}
+
+###################################
+
+POST http://localhost:3001/api/m HTTP/1.1
+content-type: application/json
+
+{
+    "say": "ei comprei uma parada para mim"        
+}

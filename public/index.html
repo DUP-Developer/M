@@ -8,53 +8,22 @@
     <title>M</title>
 
     <!--    stilos -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+        crossorigin="anonymous">
 
     <!--    scripts-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.min.js" charset="utf-8"></script>
-    <!-- <script src="./socket.io.js" charset="utf-8"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js" charset="utf-8"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 
-    <style>
-        body {
-            background-color: #1c1c1c;
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
+        crossorigin="anonymous"></script>
 
-        input[type=text] {
-            width: 100%;
-            height: 40px;
-            border: none;
-            color: black;
-            background-color: transparent;
-            font-size: 20px;
-        }
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/vue-app.js"></script>
 
-        input[type=text]:focus {
-            outline: none;
-        }
-
-        p {
-            color: black;
-            font-family: sans-serif;
-            list-style: none;
-        }
-
-        .responses p {
-            color: white;
-        }
-
-        .responses p:nth-child(odd) {
-            text-align: left
-        }
-
-        .responses p:nth-child(even) {
-            text-align: right
-        }
-    </style>
 </head>
 
 <body>
@@ -74,87 +43,53 @@
             </div>
         </div>
     </div>
-
-
-
-    <script type="text/javascript">
+    <script>
         var app = new Vue({
             el: '#app',
             data: {
                 talk: '',
                 messages: [],
-                context: false,
-                socket: io(),
-                myId: false,
-                isReply: false
+                context: false                
             },
             methods: {
-                "sendTalk": function(talk) {
-
+                "sendTalk": function (talk) {
+                    //apresentando mensagem digitada pelo cliente
                     this.messages.push({
                         text: talk,
                         owner: "You"
                     });
 
-                    if (!this.context.isReply) {
-                        app.$data.socket.emit('event-req', {
-                            message: talk
-                        })
-                    } else {
-                        app.$data.context.message = talk
+                    //atribuindo a mensagem
+                    app.$data.context.message = talk
 
-                        app.$data.socket.emit('event-question', app.$data.context)
+                    //enviando a mensagam para M
+                    $.post('/api/m', {context: JSON.stringify(app.$data.context)}, function (a) {
+                        console.log(a)
+                        //mostrando a resposta de retorno para o cliente
+                        app.$data.messages.push({
+                            text: a.context.message,
+                            owner: "M"
+                        });
+                        
+                        app.$data.context = a.context
+                        
+                    })
 
-                        this.context.isReply = !this.context.isReply
-                    }
 
-                    this.talk = '';
+
+                    app.$data.talk = '';
                 }
             }
         })
 
-        app.$data.socket.on('event-message', function(context) {
-            console.log('-----M on event-message--------\n');
-            console.log(context);
-            console.log('----------------\n');
+        $.get('/api/m', function (a) {
+            //pegando o modelo de contexto
+            a.context.drive = "web"
 
-            app.$data.messages.push({
-                text: context.message,
-                owner: "M"
-            })
+            app.$data.context = a.context
 
-            app.$data.context = context
-
-        });
-
-        app.$data.socket.on('event-question', function(context) {
-            console.log('-----M on event-question--------\n');
-            console.log(context);
-            console.log('----------------\n');
-
-            app.$data.messages.push({
-                text: context.message,
-                owner: "M"
-            })
-
-            app.$data.context = context
-
-            app.$data.context.isReply = !app.$data.context.isReply
-
-        });
-
-
-        app.$data.socket.on('event-error', function(context) {
-            console.log('-----m falando de error--------\n');
-            console.dir(context);
-            console.log('----------------\n');
-
-            app.$data.messages.push({
-                text: context.message,
-                owner: "M"
-            })
-        });
-
+            console.log(a.context)
+        })
     </script>
 </body>
 

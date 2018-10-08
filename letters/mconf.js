@@ -27,7 +27,7 @@ let mconf = {
 
         }
 
-        mconf.context.socketManager.emit('event-message', {message:'Pronto ja fiz'})
+        mconf.context.res.json({message:'Pronto ja fiz'})
         console.log(mconf.context.db.info());
     },
     run: (m) => {
@@ -42,7 +42,7 @@ let mconf = {
             terms : [
                 "lê", 'le', 'todos', 'olha', 'modulos', "ve", "modulo", "scaneia"
             ],
-            method: 'give_hello',
+            method: 'scan',
             name: '',
             found: 0
         }
