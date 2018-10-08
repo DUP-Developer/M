@@ -39,4 +39,4 @@ const mining = {
 }
 
 
-mining.request('https://www.dicio.com.br/chata/')
+mining.request('https://www.dicio.com.br/chata-veia/')
