@@ -9,7 +9,7 @@ let interaction = {
     myTerms: [
         {
             terms: [
-                "oier", 'oi', 'hello', 'olá', "vai"
+                "oier", 'oi', 'hello', 'olá', "vai", "hi", "como", "esta"
             ],
             method: 'give_hello',
             name: '',
