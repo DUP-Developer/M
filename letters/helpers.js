@@ -1,23 +1,24 @@
 const fs = require('fs')
-const db = require('../kernel/db')
 
-let mconf = {  
+const helpers = {
   run(m) {
-    //executando o metodo que o translator diz que é o certo
     this[m.context.module.method](m)
   },
   myTerms: [
     {
       terms: [
-        "lê", 'le', 'todos', 'olha', 'modulos', "ve", "modulo", "scaneia"
+        "helper", 'helpers', 'ajuda', 'quais', 'meus', "commands", "comandos", "como", "esta"
       ],
-      method: 'scan',
+      method: 'whatMyName',
       name: '',
+      description: 'posso ajudar com com todos as coisas que sei',
       found: 0
     }
   ],
-  scan(m) { //scam para adicionar novos termos no banco de dados
+  whatMyName: (m) => {
     let modules = fs.readdirSync('./letters/')
+
+    m.context.message = '\n'
 
     for (let module of modules) {
       if (!/([A-Za-z]*\.[a-zA-Z])\w+/.test(module)) continue //caso nõa seja um arquivo
@@ -25,22 +26,18 @@ let mconf = {
       let r = require("./" + module.split(".")[0])
 
       if (!r.myTerms) continue
-
+      
       for (let term of r.myTerms) //para inserir todos os termos num modulo
       {
         // adicionando o nome do modulo para ele saber quem chamar no futuro
-        term.name = module.split(".")[0]
-        // salvando o novo termo para M
-        db.insert('terms', term)
-      }
+        if (!term.description) continue
 
+        m.context.message += `${term.description} \n`
+      }
     }
-    
-    m.context.message = 'Pronto ja fiz'
-    m.res.json(m.context)
+
+    m.res.json({ context: m.context })
   }
 }
 
-mconf.scan()
-
-module.exports = mconf;
+module.exports = helpers;

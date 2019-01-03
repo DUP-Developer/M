@@ -1,10 +1,8 @@
 const app = require('express')();
 const express = require('express');
 const http = require('http').Server(app);
-const m = require('./kernel/M')();
+const m = require('./kernel/M');
 var bodyParser = require('body-parser')
-
-const querystring = require('querystring'); 
 
 /**
  * -------------------------------
@@ -23,11 +21,6 @@ app.use(express.static('public'));
  * -------------------------------
  * **/
 app.route('/')
-    .all(function (req, res, next) {
-        // runs for all HTTP verbs first
-        // think of it as route specific middleware!
-        next();
-    })
     .get(function (req, res, next) {
         res.sendFile(__dirname+"/public/index.html")
         //res.json(req.user);
@@ -35,17 +28,12 @@ app.route('/')
 
 
 app.route('/api/m')
-    .all(function (req, res, next) {
-        // runs for all HTTP verbs first
-        // think of it as route specific middleware!
-        next();
-    })
-    .get(function (req, res, next) {        
+    .get(function (req, res) {        
         res.json({
             context: m.model
         })        
     })
-    .post((req, res, next) => {                
+    .post((req, res) => {                
         m.listen(req.body.context, res)        
     })
 

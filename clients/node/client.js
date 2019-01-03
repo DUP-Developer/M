@@ -1,12 +1,11 @@
-/*
-    Cliente node for talkins with system M
- */
 var readline = require('readline')
 const axios = require('axios')
+var cowsay = require("cowsay");
+
 
 const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
+  input: process.stdin,
+  output: process.stdout
 });
 
 let uri = "http://localhost:3001/api/m";
@@ -25,46 +24,52 @@ rl.pause()
 
 //fazendo chamada inicial para pegar o model de context
 axios.get(uri)
-    .then(function (response) {
-        context = response.data.context
-        rl.resume()
-    })
-    .catch(function (error) {
-        console.log(`\nM: ${error}`);
-        rl.close();
-    });
+  .then(function (response) {
+    context = response.data.context
+    rl.resume()
+  })
+  .catch(function (error) {
+    console.log(cowsay.say({
+      text: `----- ${error} ------`,
+      e: "xX",
+      T: "U "
+    }));
+    rl.close();
+  });
 
 //rl.setPrompt('You: ');
 rl.prompt();
 
 rl.on('line', function (line) {
-    switch (line.trim()) {
-        case '!context':
-            console.log(context);
-            break;
-        default:
-            
-            context.message = line.trim()
+  switch (line.trim()) {
+    case '!context':
+      console.log(context);
+      break;
+    default:
+      context.message = line.trim()
 
-            //console.log('> You: ' + line.trim() + '');
+      //enviando para o server
+      axios.post(uri, {
+          context
+        })
+        .then(function (response) {
+          console.log('M: ' + response.data.context.message + '');
 
-            //enviando para o server
-            axios.post(uri, {
-                    context
-                })
-                .then(function (response) {                    
-                    console.log('M: ' + response.data.context.message + '');
-
-                    context = response.data.context
-                })
-                .catch(function (error) {
-                    console.log(`\nM: ${error}`);
-                    rl.close();
-                });            
-            break;
-    }
-    rl.prompt();
+          context = response.data.context
+        })
+        .catch(function (error) {
+          console.log(`\nM: ${error}`);
+          rl.close();
+        });
+      break;
+  }
+  rl.prompt();
 }).on('close', function () {
-    console.log(' -- fllw! -- ');
-    process.exit(0);
+  cowsay.say({
+    text: "----- flw ------",
+    e: "_-",
+    T: "I "
+  });
+
+  process.exit(0);
 });

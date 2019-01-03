@@ -4,7 +4,8 @@
   "description": "The init lif eof the M",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "node ./index.js",
+    "seeds": "node ./letters/mconf.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
