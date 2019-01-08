@@ -37,7 +37,7 @@ let mconf = {
     }
     
     m.context.message = 'Pronto ja fiz'
-    m.res.json(m.context)
+    m.reply(m.context)
   }
 }
 

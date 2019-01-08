@@ -1,6 +1,7 @@
 const engime = require('./engime')
 const forward = require('./forward')
-
+const { TELEGRAM, HTTP } = require ('./constants')
+const TelegramBot = require('../plugin/telegram')
 
 //criando o objeto de m
 // e instanciando todas os objetos para rodar M
@@ -8,7 +9,7 @@ class M {
   constructor() {
     this.res = {}
     this.context = {}
-  
+
     this.model = {
       ...{
         //    limpar modulo  
@@ -18,12 +19,27 @@ class M {
         //    inserir mensagem
         write: (message) => {
           this.context.message = message
-        },  
+        },
         message: "", //messagens enviadas para o server
         goBack: false,
         module: false,
-        drive: false  
+        drive: false
       }
+    }
+  }
+
+  /**
+   * 
+   * @param {Object} data response for client
+   */
+  reply(data) {
+    switch (data.context.drive) {
+      case TELEGRAM:
+        TelegramBot.send(data)
+        break;
+      case HTTP:
+        this.res.json(data)
+        break;
     }
   }
 
@@ -40,10 +56,9 @@ class M {
     if (ctx.goBack) {
       forward.reply(this)
     } else {
-      
       //Fazendo a tradução de palavras do cliente para modulo e methodo a ser chamado
       this.context = engime.moduleTranslator(this);
-      
+
       //encaminhando para o modulo responsavel
       forward.run(this);
     }

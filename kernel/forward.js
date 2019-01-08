@@ -11,7 +11,7 @@ const forward = {
 
       m.context.message = 'Não entendi.'
 
-      m.res.json({ context: m.context });
+      m.reply({ context: m.context });
 
       return;
     }

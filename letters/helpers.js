@@ -36,7 +36,7 @@ const helpers = {
       }
     }
 
-    m.res.json({ context: m.context })
+    m.reply({ context: m.context })
   }
 }
 
