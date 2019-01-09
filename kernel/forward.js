@@ -17,8 +17,9 @@ const forward = {
     }
 
     //caso ela saiba o que vc disse ela vai chamar a letter responsavel por tratar o que vc quer
-    let resultM = require('../letters/' + m.context.module.name);
-
+    let resultM = require('../letters/' + m.context.module.name).default;
+    console.log(m.context.module.name);
+    
     //com base na traduçaõ descobre quem deve resolver o que o cliente esta falando
     return resultM.run(m)
 

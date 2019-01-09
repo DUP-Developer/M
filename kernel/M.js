@@ -10,22 +10,20 @@ class M {
     this.res = {}
     this.context = {}
 
-    this.model = {
-      ...{
-        //    limpar modulo  
-        clear: () => {
-          this.context.module = false
-        },
-        //    inserir mensagem
-        write: (message) => {
-          this.context.message = message
-        },
-        message: "", //messagens enviadas para o server
-        goBack: false,
-        module: false,
-        drive: false
-      }
-    }
+    this.model = Object.assign({}, {
+      //    limpar modulo  
+      clear: () => {
+        this.context.module = false
+      },
+      //    inserir mensagem
+      write: (message) => {
+        this.context.message = message
+      },
+      message: "", //messagens enviadas para o server
+      goBack: false,
+      module: false,
+      drive: false
+    })
   }
 
   /**
@@ -47,7 +45,7 @@ class M {
     this.res = res
 
     //verificando se vem o alguma contextto do cliente
-    ctx.arrayMessage = ctx.message.split(" ")
+    ctx.arrayMessage = ctx.message.toLowerCase().split(" ")
 
     //instanciando no global o contexto
     this.context = ctx

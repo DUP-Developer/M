@@ -1,4 +1,4 @@
-const name_module = {
+export default {
   // m é uma estancia do objeto de controle geral de tudo
   run(m) {
     //executando o metodo que o translator diz que é o certo
@@ -17,9 +17,7 @@ const name_module = {
   ],
   // method principal para ser executado isso aqui o modulo todo
   // metodo qualqeur que pode ser criado pelo dev
-  method(link) {
+  method(m) {
   
   }
 }
-
-module.exports = name_module

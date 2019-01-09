@@ -4,7 +4,7 @@
   "description": "The init lif eof the M",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./index.js",
+    "dev": "babel-node ./index.js",
     "seeds": "node ./letters/mconf.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
@@ -25,5 +25,11 @@
     "script-load": "^0.1.0",
     "token": "^0.1.0",
     "vue": "^2.5.9"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.9"
   }
 }

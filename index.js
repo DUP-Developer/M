@@ -1,10 +1,12 @@
-const app = require('express')();
-const express = require('express');
-const http = require('http').Server(app);
-const m = require('./kernel/M');
-const bodyParser = require('body-parser')
-const TelegramBot = require('./plugin/telegram')
+import express from 'express'
+import Http from 'http'
+import m from './kernel/M'
+import bodyParser from 'body-parser'
+import TelegramBot from './plugin/telegram'
 
+
+const app = express()
+const http = Http.Server(app)
 /**
  * -------------------------------
  * middware

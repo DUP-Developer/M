@@ -3,9 +3,9 @@
 Meu money
 ------------------------------------------------
 **/
-const _ = require('lodash')
+import _ from 'lodash'
 
-const financas = {
+export default {
     termsPositives: ["sim", "tem", "quero"],
     termsNegatives: ["não", "vlw", "de boas"],
     itemWait: {}, // item que fica aguardando um valor chegar informado pelo cliente
@@ -277,7 +277,3 @@ const financas = {
         }
     ]
 }
-
-
-
-module.exports = financas;

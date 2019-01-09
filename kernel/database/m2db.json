@@ -2,186 +2,76 @@
   "terms": [
     {
       "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
+        "comprei",
+        "parada",
+        "uma",
+        "negocio"
       ],
-      "method": "disponivel",
+      "method": "what",
       "name": "financas",
       "found": 0,
       "id": 1
     },
     {
       "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
+        "kkkk",
+        "hahahah",
+        "kkk",
+        "rsrsrs"
       ],
-      "method": "what",
-      "name": "financas",
-      "found": 0,
-      "id": 2
-    },
-    {
-      "terms": [
-        "helper",
-        "helpers",
-        "ajuda",
-        "quais",
-        "meus",
-        "commands",
-        "comandos",
-        "como",
-        "esta"
-      ],
-      "method": "whatMyName",
-      "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
+      "method": "laughs",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
       "found": 0,
       "id": 3
     },
     {
       "terms": [
-        "oier",
-        "oi",
-        "hello",
-        "olá",
-        "vai",
-        "hi",
-        "como",
-        "esta"
+        "salva",
+        "link",
+        "para",
+        "mim",
+        "guarda"
       ],
-      "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
-      "name": "interaction",
-      "found": 0,
-      "id": 4
+      "method": "save",
+      "name": "links",
+      "found": 0
     },
     {
       "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
+        "helper",
+        "helpers",
+        "ajuda",
+        "quais",
+        "meus",
+        "commands",
+        "comandos",
+        "como",
+        "esta"
       ],
-      "method": "disponivel",
-      "name": "financas",
+      "method": "whatMyName",
+      "name": "helpers",
+      "description": "Posso ajudar com com todos as coisas que sei. \n",
       "found": 0,
       "id": 6
     },
     {
       "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
+        "lê",
+        "le",
+        "olha",
+        "modulos",
+        "ve",
+        "modulo",
+        "scaneia"
       ],
-      "method": "what",
-      "name": "financas",
-      "found": 0,
-      "id": 7
-    },
-    {
-      "terms": [
-        "helper",
-        "helpers",
-        "ajuda",
-        "quais",
-        "meus",
-        "commands",
-        "comandos",
-        "como",
-        "esta"
-      ],
-      "method": "whatMyName",
-      "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
-      "found": 0,
-      "id": 8
-    },
-    {
-      "terms": [
-        "oier",
-        "oi",
-        "hello",
-        "olá",
-        "vai",
-        "hi",
-        "como",
-        "esta"
-      ],
-      "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
-      "name": "interaction",
-      "found": 0,
-      "id": 9
-    },
-    {
-      "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
-      ],
-      "method": "disponivel",
-      "name": "financas",
-      "found": 0,
-      "id": 11
-    },
-    {
-      "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
-      ],
-      "method": "what",
-      "name": "financas",
-      "found": 0,
-      "id": 12
-    },
-    {
-      "terms": [
-        "helper",
-        "helpers",
-        "ajuda",
-        "quais",
-        "meus",
-        "commands",
-        "comandos",
-        "como",
-        "esta"
-      ],
-      "method": "whatMyName",
-      "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
-      "found": 0,
-      "id": 13
-    },
-    {
-      "terms": [
-        "oier",
-        "oi",
-        "hello",
-        "olá",
-        "vai",
-        "hi",
-        "como",
-        "esta"
-      ],
-      "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
-      "name": "interaction",
-      "found": 0,
-      "id": 14
+      "method": "scan",
+      "description": "Posso escaniar todos os modulos registrados, só pedir.\n",
+      "name": "mconf",
+      "found": 0
     }
   ],
   "configsIncrements": {
-    "terms": 15
+    "terms": 7
   }
 }
