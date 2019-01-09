@@ -2,15 +2,16 @@
   "terms": [
     {
       "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
+        "extrato",
+        "meu",
+        "contas",
+        "mes"
       ],
-      "method": "what",
+      "method": "extrato",
       "name": "financas",
       "found": 0,
-      "id": 1
+      "id": 1,
+      "description": "Posso mostrar seu extrato de gastos."
     },
     {
       "terms": [
@@ -69,9 +70,104 @@
       "description": "Posso escaniar todos os modulos registrados, só pedir.\n",
       "name": "mconf",
       "found": 0
+    },
+    {
+      "terms": [
+        "dinheiro",
+        "posso",
+        "gastar",
+        "tenho",
+        "quanto"
+      ],
+      "method": "disponivel",
+      "name": "financas",
+      "found": 0,
+      "id": 8
+    },
+    {
+      "terms": [
+        "ei",
+        "eaw",
+        "oier",
+        "oi",
+        "hello",
+        "olá",
+        "vai",
+        "hi"
+      ],
+      "method": "give_hello",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 9
+    },
+    {
+      "terms": [
+        "vllw",
+        "obrigado",
+        "massa"
+      ],
+      "method": "thanks",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 10
+    },
+    {
+      "terms": [
+        "comprei",
+        "parada",
+        "uma",
+        "negocio"
+      ],
+      "method": "what",
+      "name": "financas",
+      "description": "Posso guardar seus gastos para ter um comtrole melhor.",
+      "found": 0,
+      "id": 11
+    },
+    {
+      "terms": [
+        "extrato",
+        "meu",
+        "contas",
+        "mes"
+      ],
+      "method": "extrato",
+      "description": "Posso mostrar seu extrato de gastos.",
+      "name": "financas",
+      "found": 0,
+      "id": 12
+    },
+    {
+      "terms": [
+        "kkkk",
+        "hahahah",
+        "kkk",
+        "rsrsrs"
+      ],
+      "method": "laughs",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 13
+    },
+    {
+      "terms": [
+        "dinheiro",
+        "posso",
+        "gastar",
+        "tenho",
+        "quanto"
+      ],
+      "method": "buy",
+      "name": "financas",
+      "description": "Posso mostrar quanto de dinheiro disponivel você possui.",
+      "found": 0,
+      "id": 14
     }
   ],
   "configsIncrements": {
-    "terms": 7
+    "terms": 14
   }
 }

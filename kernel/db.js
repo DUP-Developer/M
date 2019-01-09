@@ -54,7 +54,10 @@ const db_mod = {
 
     
     //se já existe u id ele atualiza
-    if (db_mod.findBy(table, {name: json.name})) {
+    if (db_mod.findBy(table, {
+        name: json.name,
+        method: json.method
+      })) {
       json = db.get(table).find({
         name: json.name
       }).assign(json).write()
