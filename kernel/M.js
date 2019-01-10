@@ -3,6 +3,8 @@ const forward = require('./forward')
 const { TELEGRAM, HTTP } = require ('./constants')
 const TelegramBot = require('../plugin/telegram')
 
+import _ from 'lodash'
+
 //criando o objeto de m
 // e instanciando todas os objetos para rodar M
 class M {
@@ -43,7 +45,11 @@ class M {
 
   listen(ctx, res) {
     this.res = res
-
+    
+    if (_.isString(ctx)) {
+      ctx = JSON.parse(ctx)
+    }
+    
     //verificando se vem o alguma contextto do cliente
     ctx.arrayMessage = ctx.message.toLowerCase().split(" ")
 
