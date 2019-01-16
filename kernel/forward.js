@@ -36,7 +36,6 @@ const forward = {
     //limpando goBack
     m.context.goBack = false
 
-
     //caso ela saiba o que vc disse ela vai chamar a letter responsavel por tratar o que vc quer
     let resultM = require('../letters/' + m.context.module.name).default;
 

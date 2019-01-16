@@ -2,6 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 
 export default {
+  startup(m){},
   run(m) {
     //executando o metodo que o translator diz que é o certo
     this[m.context.module.method](m)

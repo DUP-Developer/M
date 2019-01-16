@@ -2,6 +2,7 @@ import fs from 'fs'
 import db from '../kernel/db'
 
 export default {
+  startup(m) {},
   run(m) {
     //executando o metodo que o translator diz que é o certo
     this[m.context.module.method](m)
@@ -36,9 +37,18 @@ export default {
       {
         // adicionando o nome do modulo para ele saber quem chamar no futuro
         term.name = module.split(".")[0]
-        // salvando o novo termo para M
-        db.insert('terms', term)
+
+        const exists = db.findBy('terms', { name: term.name, method: term.method })
+
+        if (exists) {
+          db.update('terms', exists.id, term)
+        } else {
+          // salvando o novo termo para M
+          db.insert('terms', term)
+        }
       }
+
+      r.startup(m)
     }
         
     if (m != null) {

@@ -2,41 +2,74 @@
   "terms": [
     {
       "terms": [
+        "meus",
+        "animes",
+        "anime",
+        "lista",
+        "listagem"
+      ],
+      "method": "list",
+      "name": "animes",
+      "description": "Posso listar todos os animes guardou p depois",
+      "found": 0,
+      "id": 13
+    },
+    {
+      "terms": [
+        "assisti",
+        "assistir",
+        "ver",
+        "episodio",
+        "animes",
+        "epsodio",
+        "ep",
+        "anime"
+      ],
+      "method": "ep",
+      "name": "animes",
+      "description": "Posso atualizar o ep do anime que vc esta assistindo",
+      "found": 0,
+      "id": 2
+    },
+    {
+      "terms": [
+        "dinheiro",
+        "posso",
+        "gastar",
+        "tenho",
+        "quanto"
+      ],
+      "method": "buy",
+      "name": "financas",
+      "description": "Posso mostrar quanto de dinheiro disponivel você possui.",
+      "found": 0,
+      "id": 14
+    },
+    {
+      "terms": [
+        "comprei",
+        "parada",
+        "uma",
+        "negocio"
+      ],
+      "method": "what",
+      "name": "financas",
+      "description": "Posso guardar seus gastos para ter um comtrole melhor.",
+      "found": 0,
+      "id": 4
+    },
+    {
+      "terms": [
         "extrato",
         "meu",
         "contas",
         "mes"
       ],
       "method": "extrato",
+      "description": "Posso mostrar seu extrato de gastos.",
       "name": "financas",
       "found": 0,
-      "id": 1,
-      "description": "Posso mostrar seu extrato de gastos."
-    },
-    {
-      "terms": [
-        "kkkk",
-        "hahahah",
-        "kkk",
-        "rsrsrs"
-      ],
-      "method": "laughs",
-      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
-      "name": "interaction",
-      "found": 0,
-      "id": 3
-    },
-    {
-      "terms": [
-        "salva",
-        "link",
-        "para",
-        "mim",
-        "guarda"
-      ],
-      "method": "save",
-      "name": "links",
-      "found": 0
+      "id": 5
     },
     {
       "terms": [
@@ -58,34 +91,6 @@
     },
     {
       "terms": [
-        "lê",
-        "le",
-        "olha",
-        "modulos",
-        "ve",
-        "modulo",
-        "scaneia"
-      ],
-      "method": "scan",
-      "description": "Posso escaniar todos os modulos registrados, só pedir.\n",
-      "name": "mconf",
-      "found": 0
-    },
-    {
-      "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
-      ],
-      "method": "disponivel",
-      "name": "financas",
-      "found": 0,
-      "id": 8
-    },
-    {
-      "terms": [
         "ei",
         "eaw",
         "oier",
@@ -99,7 +104,7 @@
       "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
       "name": "interaction",
       "found": 0,
-      "id": 9
+      "id": 15
     },
     {
       "terms": [
@@ -111,33 +116,7 @@
       "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
       "name": "interaction",
       "found": 0,
-      "id": 10
-    },
-    {
-      "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
-      ],
-      "method": "what",
-      "name": "financas",
-      "description": "Posso guardar seus gastos para ter um comtrole melhor.",
-      "found": 0,
-      "id": 11
-    },
-    {
-      "terms": [
-        "extrato",
-        "meu",
-        "contas",
-        "mes"
-      ],
-      "method": "extrato",
-      "description": "Posso mostrar seu extrato de gastos.",
-      "name": "financas",
-      "found": 0,
-      "id": 12
+      "id": 8
     },
     {
       "terms": [
@@ -149,6 +128,66 @@
       "method": "laughs",
       "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
       "name": "interaction",
+      "found": 0,
+      "id": 9
+    },
+    {
+      "terms": [
+        "salva",
+        "link",
+        "para",
+        "mim",
+        "guarda"
+      ],
+      "method": "save",
+      "name": "links",
+      "found": 0,
+      "id": 10
+    },
+    {
+      "terms": [
+        "lê",
+        "le",
+        "olha",
+        "modulos",
+        "ve",
+        "modulo",
+        "scaneia"
+      ],
+      "method": "scan",
+      "description": "Posso escaniar todos os modulos registrados, só pedir.\n",
+      "name": "mconf",
+      "found": 1
+    },
+    {
+      "terms": [
+        "adiciona",
+        "adicionar",
+        "add",
+        "coloca",
+        "bota",
+        "anime",
+        "animes",
+        "lista"
+      ],
+      "method": "add",
+      "name": "animes",
+      "description": "Posso adicionar um novo anime na lista para assistir",
+      "found": 0,
+      "id": 12
+    },
+    {
+      "terms": [
+        "meus",
+        "animes",
+        "episodios",
+        "animes",
+        "anime",
+        "lista"
+      ],
+      "method": "list",
+      "name": "animes",
+      "description": "Posso listar todos os animes guardou p depois",
       "found": 0,
       "id": 13
     },
@@ -165,9 +204,33 @@
       "description": "Posso mostrar quanto de dinheiro disponivel você possui.",
       "found": 0,
       "id": 14
+    },
+    {
+      "terms": [
+        "ei",
+        "eaw",
+        "oier",
+        "oi",
+        "hello",
+        "olá",
+        "vai",
+        "hi"
+      ],
+      "method": "give_hello",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 15
     }
   ],
   "configsIncrements": {
-    "terms": 14
-  }
+    "terms": 15,
+    "animes": 1
+  },
+  "animes": [
+    {
+      "nome": "cho",
+      "ep": 0
+    }
+  ]
 }

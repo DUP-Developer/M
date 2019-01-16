@@ -1,4 +1,5 @@
 export default {
+  startup(m) {},
   run(m) {
     this[m.context.module.method](m)
   },

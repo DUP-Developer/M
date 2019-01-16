@@ -1,4 +1,9 @@
 export default {
+  // metodo que é executado quando a letter é
+  // adicionado na base de conhecimentos de M
+  startup(m) {
+
+  },
   // m é uma estancia do objeto de controle geral de tudo
   run(m) {
     //executando o metodo que o translator diz que é o certo

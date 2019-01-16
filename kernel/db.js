@@ -29,9 +29,9 @@ const db_mod = {
   
   //criando tabelas dado o nome da tabela
   createTable: (table) => {
-    if (db.has(table).value() == null) {
+    if (!db.has(table).value()) {
       // criando a tabela de para serem inserido no futuro informações
-      db.set(table, {}).write()
+      db.set(table, []).write()
 
       // criando propriedade para auto incremento especiffico dessa tabela
       db.set('configsIncrements.' + table, 0).write()
@@ -52,21 +52,11 @@ const db_mod = {
       return;
     }
 
-    
-    //se já existe u id ele atualiza
-    if (db_mod.findBy(table, {
-        name: json.name,
-        method: json.method
-      })) {
-      json = db.get(table).find({
-        name: json.name
-      }).assign(json).write()
-    } else {
-      // inserindo no banco de dados
-      db.get(table).push(json).value()
-      // adicionando o novo id automatico
-      json.id = db_mod.auto_increment(table)
-    }
+        
+    // inserindo no banco de dados
+    db.get(table).push(json).value()
+    // adicionando o novo id automatico
+    json.id = db_mod.auto_increment(table)
 
     return json.id
   },
@@ -108,7 +98,7 @@ const db_mod = {
   },
 
   all: (table) => {
-    return Object.assign({}, db.get(table).value())
+    return Object.assign([], db.get(table).value())
   }
 
 }
