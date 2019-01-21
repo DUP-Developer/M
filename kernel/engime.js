@@ -72,7 +72,7 @@ const engime = {
     }), 'found')
     
     // middleware de report de atividades
-    Logs.report('engime.js:75', myTerms)
+    // Logs.report('engime.js:75', myTerms)
 
     if (myTerms){
       m.context.module = myTerms

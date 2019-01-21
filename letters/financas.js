@@ -1,8 +1,18 @@
 import _ from 'lodash'
 import moment from 'moment'
+import db from '../kernel/db'
 
 export default {
-  startup(m){},
+  startup(m){
+    db.createTable('financas')
+    db.insert('financas', {
+      receita: 763,
+      date: new Date(),
+      despesas: [],
+      despesasFixas: [],
+      type: 'creditCard'
+    })
+  },
   run(m) {
     //executando o metodo que o translator diz que é o certo
     this[m.context.module.method](m)
@@ -40,6 +50,7 @@ export default {
   itemWait: {}, // item que fica aguardando um valor chegar informado pelo cliente
   what(m) {
     m.context.message = 'O que foi que vc comprou?'
+    m.context.awaitReply = true
 
     m.context.goBack = {
       module: 'financas',
@@ -55,7 +66,8 @@ export default {
     let newItem = this.engime.item_price(m)
 
     if (newItem) {
-      this.money.despesas.push(newItem)
+      db.insert('financas[0].despesas', newItem)
+      // this.money.despesas.push(newItem)
       this.again(m)
     } else {
       //adicionando o item para ser oppulado na proxima execução
@@ -177,33 +189,48 @@ export default {
     })
   },
 
-  buy(m) {
-    m.socketManager.question({
-      message: 'Quanto é a parada? \n'
-    }, (answer) => {
-      var valorNovaAquisicao = parseFloat(answer.replace(',', '.'))
+  buy(m) {   
+    const { awaitReply, message } = m.context
+    
+    if (awaitReply) {
+      var valorNovaAquisicao = parseFloat(message.replace(',', '.'))
 
       if (this.money.receita > this.DespesasTotais()) {
         if ((this.money.receita - this.DespesasTotais()) > valorNovaAquisicao) {
           m.context.message = 'Da para comprar sim, e ainda sobra R$ ' + ((this.money.receita - this.DespesasTotais()) - valorNovaAquisicao).toFixed(2) + '\n'
+          m.context.awaitReply = false
 
           m.reply({
             context: m.context
           })
         } else {
           m.context.message = 'Da não vicc, é caro só temos R$ ' + ((this.money.receita - this.DespesasTotais())).toFixed(2) + '\n'
+          m.context.awaitReply = false
+
           m.reply({
             context: m.context
           })
         }
       } else {
         m.context.message = 'Homi, tu tá e devendo demais vlh. da não.\n'
+        m.context.awaitReply = false
+
         m.reply({
           context: m.context
         })
+      }     
+    } else {
+      m.context.message = 'Quanto é a parada? \n'
+      m.context.goBack = {
+        method: 'buy',
+        module: 'financas'
       }
+      m.context.awaitReply = true
 
-    })
+      m.reply({
+        context: m.context
+      })
+    }    
   },
   disponivel(m) {
     let sum = this.DespesasTotais();

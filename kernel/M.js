@@ -23,6 +23,7 @@ class M {
       },
       message: "", //messagens enviadas para o server
       goBack: false,
+      awaitReply: false, // caso o metodo aguarde responsta
       module: false,
       drive: false
     })
@@ -57,7 +58,7 @@ class M {
     this.context = ctx
 
     //have goback? - se é uma requisição de resposta que M esta esperando
-    if (ctx.goBack) {
+    if (ctx.goBack && ctx.awaitReply) {
       forward.reply(this)
     } else {
       //Fazendo a tradução de palavras do cliente para modulo e methodo a ser chamado
