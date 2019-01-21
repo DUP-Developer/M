@@ -1,6 +1,7 @@
 const fs = require('fs')
 
-const helpers = {
+export default {
+  startup(m) {},
   run(m) {
     this[m.context.module.method](m)
   },
@@ -11,11 +12,11 @@ const helpers = {
       ],
       method: 'whatMyName',
       name: '',
-      description: 'posso ajudar com com todos as coisas que sei',
+      description: 'Posso ajudar com com todos as coisas que sei. \n',
       found: 0
     }
   ],
-  whatMyName: (m) => {
+  whatMyName(m) {
     let modules = fs.readdirSync('./letters/')
 
     m.context.message = '\n'
@@ -23,7 +24,7 @@ const helpers = {
     for (let module of modules) {
       if (!/([A-Za-z]*\.[a-zA-Z])\w+/.test(module)) continue //caso nõa seja um arquivo
 
-      let r = require("./" + module.split(".")[0])
+      let r = require("./" + module.split(".")[0]).default
 
       if (!r.myTerms) continue
       
@@ -36,8 +37,6 @@ const helpers = {
       }
     }
 
-    m.res.json({ context: m.context })
+    m.reply({ context: m.context })
   }
 }
-
-module.exports = helpers;

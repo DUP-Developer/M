@@ -1,7 +1,8 @@
-const fs = require('fs')
-const db = require('../kernel/db')
+import fs from 'fs'
+import db from '../kernel/db'
 
-let mconf = {  
+export default {
+  startup(m) {},
   run(m) {
     //executando o metodo que o translator diz que é o certo
     this[m.context.module.method](m)
@@ -9,38 +10,53 @@ let mconf = {
   myTerms: [
     {
       terms: [
-        "lê", 'le', 'todos', 'olha', 'modulos', "ve", "modulo", "scaneia"
+        'lê', 'le', 'olha', 'modulos', 've', 'modulo', 'scaneia'
       ],
       method: 'scan',
-      name: '',
+      description: 'Posso escaniar todos os modulos registrados, só pedir.\n',
+      name: 'mconf',
       found: 0
     }
   ],
+  /**
+   * escaneia modulos e adiciona os termos e referencias
+   * no banco de dados local
+   * @param {Object} m 
+   */
   scan(m) { //scam para adicionar novos termos no banco de dados
     let modules = fs.readdirSync('./letters/')
-
-    for (let module of modules) {
+    
+    for (let module of modules) {      
       if (!/([A-Za-z]*\.[a-zA-Z])\w+/.test(module)) continue //caso nõa seja um arquivo
-
-      let r = require("./" + module.split(".")[0])
-
+      
+      let r = require("./" + module.split(".")[0]).default
+      
       if (!r.myTerms) continue
 
       for (let term of r.myTerms) //para inserir todos os termos num modulo
       {
         // adicionando o nome do modulo para ele saber quem chamar no futuro
         term.name = module.split(".")[0]
-        // salvando o novo termo para M
-        db.insert('terms', term)
+
+        const exists = db.findBy('terms', { name: term.name, method: term.method })
+
+        if (exists) {
+          db.update('terms', exists.id, term)
+        } else {
+          // salvando o novo termo para M
+          db.insert('terms', term)
+        }
       }
 
+      r.startup(m)
     }
-    
-    m.context.message = 'Pronto ja fiz'
-    m.res.json(m.context)
+        
+    if (m != null) {
+      m.context.message = 'Pronto ja fiz'
+      
+      m.reply({
+        context: m.context
+      })
+    }
   }
 }
-
-mconf.scan()
-
-module.exports = mconf;

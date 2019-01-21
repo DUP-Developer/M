@@ -2,16 +2,65 @@
   "terms": [
     {
       "terms": [
+        "adiciona",
+        "adicionar",
+        "add",
+        "coloca",
+        "bota",
+        "anime",
+        "animes",
+        "lista"
+      ],
+      "method": "add",
+      "name": "animes",
+      "description": "Posso adicionar um novo anime na lista para assistir",
+      "found": 0,
+      "id": 1
+    },
+    {
+      "terms": [
+        "assisti",
+        "assistir",
+        "ver",
+        "episodio",
+        "animes",
+        "epsodio",
+        "ep",
+        "anime"
+      ],
+      "method": "ep",
+      "name": "animes",
+      "description": "Posso atualizar o ep do anime que vc esta assistindo",
+      "found": 0,
+      "id": 2
+    },
+    {
+      "terms": [
+        "meus",
+        "animes",
+        "anime",
+        "lista",
+        "listagem"
+      ],
+      "method": "list",
+      "name": "animes",
+      "description": "Posso listar todos os animes guardou p depois",
+      "found": 0,
+      "id": 3
+    },
+    {
+      "terms": [
         "dinheiro",
         "posso",
         "gastar",
         "tenho",
         "quanto"
       ],
-      "method": "disponivel",
+      "method": "buy",
       "name": "financas",
+      "description": "Posso mostrar quanto de dinheiro disponivel você possui.",
       "found": 0,
-      "id": 1
+      "id": 4
     },
     {
       "terms": [
@@ -22,71 +71,25 @@
       ],
       "method": "what",
       "name": "financas",
+      "description": "Posso guardar seus gastos para ter um comtrole melhor.",
       "found": 0,
-      "id": 2
+      "id": 5
     },
     {
       "terms": [
-        "helper",
-        "helpers",
-        "ajuda",
-        "quais",
-        "meus",
-        "commands",
-        "comandos",
-        "como",
-        "esta"
+        "extrato",
+        "meu",
+        "contas",
+        "mes"
       ],
-      "method": "whatMyName",
-      "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
-      "found": 0,
-      "id": 3
-    },
-    {
-      "terms": [
-        "oier",
-        "oi",
-        "hello",
-        "olá",
-        "vai",
-        "hi",
-        "como",
-        "esta"
-      ],
-      "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
-      "name": "interaction",
-      "found": 0,
-      "id": 4
-    },
-    {
-      "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
-      ],
-      "method": "disponivel",
+      "method": "extrato",
+      "description": "Posso mostrar seu extrato de gastos.",
       "name": "financas",
       "found": 0,
       "id": 6
     },
     {
       "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
-      ],
-      "method": "what",
-      "name": "financas",
-      "found": 0,
-      "id": 7
-    },
-    {
-      "terms": [
         "helper",
         "helpers",
         "ajuda",
@@ -99,89 +102,95 @@
       ],
       "method": "whatMyName",
       "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
+      "description": "Posso ajudar com com todos as coisas que sei. \n",
       "found": 0,
-      "id": 8
+      "id": 7
     },
     {
       "terms": [
+        "ei",
+        "eaw",
         "oier",
         "oi",
         "hello",
         "olá",
         "vai",
-        "hi",
-        "como",
-        "esta"
+        "hi"
       ],
       "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 8
+    },
+    {
+      "terms": [
+        "vllw",
+        "obrigado",
+        "massa"
+      ],
+      "method": "thanks",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
       "name": "interaction",
       "found": 0,
       "id": 9
     },
     {
       "terms": [
-        "dinheiro",
-        "posso",
-        "gastar",
-        "tenho",
-        "quanto"
+        "kkkk",
+        "hahahah",
+        "kkk",
+        "rsrsrs"
       ],
-      "method": "disponivel",
-      "name": "financas",
+      "method": "laughs",
+      "description": "Posso interação como uma pessoa normal, fale um oi ;) \n",
+      "name": "interaction",
+      "found": 0,
+      "id": 10
+    },
+    {
+      "terms": [
+        "salva",
+        "link",
+        "para",
+        "mim",
+        "guarda"
+      ],
+      "method": "save",
+      "name": "links",
       "found": 0,
       "id": 11
     },
     {
       "terms": [
-        "comprei",
-        "parada",
-        "uma",
-        "negocio"
+        "lê",
+        "le",
+        "olha",
+        "modulos",
+        "ve",
+        "modulo",
+        "scaneia"
       ],
-      "method": "what",
-      "name": "financas",
-      "found": 0,
-      "id": 12
-    },
-    {
-      "terms": [
-        "helper",
-        "helpers",
-        "ajuda",
-        "quais",
-        "meus",
-        "commands",
-        "comandos",
-        "como",
-        "esta"
-      ],
-      "method": "whatMyName",
-      "name": "helpers",
-      "description": "posso ajudar com com todos as coisas que sei",
-      "found": 0,
-      "id": 13
-    },
-    {
-      "terms": [
-        "oier",
-        "oi",
-        "hello",
-        "olá",
-        "vai",
-        "hi",
-        "como",
-        "esta"
-      ],
-      "method": "give_hello",
-      "description": "Interação comigo, fale um oi",
-      "name": "interaction",
-      "found": 0,
-      "id": 14
+      "method": "scan",
+      "description": "Posso escaniar todos os modulos registrados, só pedir.\n",
+      "name": "mconf",
+      "found": 0
     }
   ],
   "configsIncrements": {
-    "terms": 15
-  }
+    "terms": 12,
+    "animes": 0,
+    "financas": 1
+  },
+  "animes": [],
+  "financas": [
+    {
+      "receita": 763,
+      "date": "2019-01-21T04:02:56.130Z",
+      "despesas": [],
+      "despesasFixas": [],
+      "type": "creditCard",
+      "id": 1
+    }
+  ]
 }
