@@ -15,7 +15,7 @@
   "author": "Joerverson Santos",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.4",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
